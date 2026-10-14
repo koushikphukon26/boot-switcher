@@ -1,6 +1,8 @@
 # Boot Switcher
 
-Boot Switcher lets you list boot entries and request the next boot from a terminal.
+# Boot Switcher
+
+Boot Switcher lets you switch between available operating systems directly from the terminal without manually opening the BIOS/UEFI boot menu. Select a boot entry, and Boot Switcher requests that the computer start from the selected entry on the next reboot.
 
 ## Windows Installation
 
