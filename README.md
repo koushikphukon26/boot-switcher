@@ -2,120 +2,144 @@
 
 Boot Switcher lets you list boot entries and request the next boot from a terminal.
 
-## Windows
+## Windows Installation
 
-### Installation
+### Step 1: Download
 
-1. Download the project using **Code → Download ZIP**.
-2. Extract the ZIP file.
-3. Open the extracted `boot-switcher` folder.
-4. Open PowerShell in that folder.
-5. Run the following commands:
+1. Open this repository on GitHub.
+2. Click **Code → Download ZIP**.
+3. Extract the ZIP file.
+4. Open the extracted `boot-switcher` folder.
 
-   powershell
-   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-   .\install.ps1
-   
+### Step 2: Run the installer
 
-6. Approve the administrator prompt if requested.
-7. When installation finishes, close PowerShell and open a new PowerShell or Command Prompt window.
+Open PowerShell in the extracted project folder and copy and run:
 
-The execution-policy setting above applies only to the current PowerShell process. It does not permanently change your system policy.
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
 
-### Usage
+Then run:
 
-List the available firmware boot entries:
+```powershell
+.\install.ps1
+```
 
-powershell
+Approve the administrator prompt if requested. The execution-policy bypass applies only to the current PowerShell process.
+
+### Step 3: Open a new terminal
+
+After installation, close the terminal and open a new PowerShell or Command Prompt window.
+
+### Step 4: List boot entries
+
+Copy and run:
+
+```powershell
 boot
+```
 
+Read the displayed entry names and numbers carefully.
 
-Select an entry by its displayed number:
+### Step 5: Select a boot entry
 
-powershell
+To request the next boot using entry number 0:
+
+```powershell
 boot 0
+```
 
+To request the next boot using entry number 1:
 
-Or:
-
-powershell
+```powershell
 boot 1
+```
 
+Replace the number with the entry you actually want. Selecting an entry may restart your computer immediately. Save your work first.
 
-Use the number shown by your own `boot` output. Do not assume that entry `0` is Windows or entry `1` is Linux.
+## Windows Troubleshooting
 
-**Important:** Selecting an entry may schedule the next boot and immediately restart the PC. Save your work before using a selection command.
+### Problem: PowerShell says running scripts is disabled
 
-Windows support uses UEFI firmware entries. The list may include firmware tools or other entries, not only operating systems.
+Try running the installed CMD launcher directly:
 
-If PowerShell blocks the `boot` command after installation, the launcher may be conflicting with a PowerShell script of the same name. Follow the troubleshooting instructions below.
-
-### Windows troubleshooting
-
-If PowerShell reports that running scripts is disabled, first try the installed launcher directly:
-
-powershell
+```powershell
 & "$env:ProgramData\BootSwitcher\boot.cmd"
+```
 
+### Problem: The launcher still cannot run the script
 
-If necessary, run the PowerShell script through a temporary execution-policy bypass:
+If the installed PowerShell file is named `boot.ps1`, run:
 
-powershell
+```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:ProgramData\BootSwitcher\boot.ps1"
+```
 
+If your installed file is named `boot-script.ps1`, run:
 
-If your installation uses `boot-script.ps1` instead of `boot.ps1`, use this command:
-
-powershell
+```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:ProgramData\BootSwitcher\boot-script.ps1"
+```
 
+Use the command that matches the filename actually installed on your computer. The installer and launcher must use consistent filenames.
 
-These commands assume that the named files exist at the specified locations. Do not rename installed files unless the launcher and installer are updated to match.
+### Problem: The `boot` command is not recognized
 
-## Linux
+1. Close PowerShell or Command Prompt.
+2. Open a new terminal.
+3. Try:
 
-This installer is for APT-based Linux distributions that use GRUB.
+```powershell
+where.exe boot
+```
 
-### Installation
+If the launcher is missing, check that `C:\ProgramData\BootSwitcher` contains the expected launcher files and that this directory is included in your PATH.
 
-1. Download the project using **Code → Download ZIP**.
-2. Extract the ZIP file.
-3. Open a terminal in the extracted `boot-switcher` folder.
-4. Run:
+## Linux Installation
 
-bash
+This installer is intended for APT-based Linux distributions that use GRUB.
+
+### Step 1: Download and extract
+
+Download the ZIP from GitHub and extract the project folder.
+
+### Step 2: Install
+
+Open a terminal in the extracted folder and run:
+
+```bash
 chmod +x install.sh
 ./install.sh
+```
 
+Follow the installer prompts.
 
-Follow any prompts displayed by the installer. It may ask before installing `os-prober` and may update the GRUB configuration.
+### Step 3: List boot entries
 
-### Usage
-
-List the available top-level GRUB menu entries:
-
-bash
+```bash
 boot
+```
 
+### Step 4: Select a boot entry
 
-Select an entry by its displayed number:
-
-bash
+```bash
 boot 0
-
+```
 
 Or:
 
-bash
+```bash
 boot 1
+```
 
-Use the number displayed on your own computer. Selecting an entry may schedule the next boot and restart the computer. Save your work first.
+Use the number displayed by your own system. Selecting an entry may schedule the next boot and restart the computer.
 
-## Notes
+## Important Notes
 
 - Windows support uses UEFI firmware entries.
-- Linux support depends on APT and GRUB; this is not a universal installer for every Linux distribution.
-- OS detection depends on entries exposed by the system's firmware or GRUB configuration.
-- Firmware entries do not necessarily correspond one-to-one with installed operating systems.
-- Review the entry names carefully before selecting an entry.
-- Test the listing command before attempting to change the next boot.
+- Linux support depends on APT and GRUB.
+- Firmware entries may include tools and recovery options, not just operating systems.
+- Save all work before selecting an entry that may restart the computer.
+- Test the listing command before requesting a boot change.
+- Review scripts before running them with administrator privileges.
+- This project has not been tested on every Windows or Linux configuration.
